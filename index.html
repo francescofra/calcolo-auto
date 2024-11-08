@@ -3,29 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calcolo Costo Totale Auto</title>
+    <title>Calcola il Costo Totale della Tua Auto!</title>
+    <style>
+        /* Stile generale */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            justify-content: center;  /* Centra orizzontalmente */
+            align-items: flex-start;  /* Allinea in cima verticalmente */
+            margin: 0;
+            padding-top: 20px; /* Aggiunge spazio sopra */
+            min-height: 100vh; /* Assicura che l'altezza sia sufficiente */
+        }
+
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        /* Contenitore del form */
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px; /* Impostato per una larghezza più ampia */
+            margin-top: 20px; /* Spazio sopra */
+            box-sizing: border-box;
+        }
+
+        /* Stili per le etichette e gli input */
+        label {
+            font-size: 16px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 6px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        /* Sezione degli optional */
+        .optional {
+            margin-top: 20px;
+        }
+
+        .optional label {
+            display: inline-block;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .optional input {
+            margin-bottom: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Stile per il risultato */
+        #risultato {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>Calcolo del Costo Totale dell'Auto con Finanziamento</h1>
-    
-    <label for="anticipo">Anticipo (€):</label>
-    <input type="number" id="anticipo" step="0.01" required><br><br>
+    <div class="form-container">
+        <h1>Calcola il Costo Totale della Tua Auto!</h1>
 
-    <label for="rata_mensile">Rata Mensile (€):</label>
-    <input type="number" id="rata_mensile" step="0.01" required><br><br>
+        <label for="anticipo">Anticipo (€):</label>
+        <input type="text" id="anticipo" required><br>
 
-    <label for="numero_rate">Numero di Rate:</label>
-    <input type="number" id="numero_rate" required><br><br>
+        <label for="rata_mensile">Rata Mensile (€):</label>
+        <input type="text" id="rata_mensile" required><br>
 
-    <label for="rata_finale">Rata Finale (€):</label>
-    <input type="number" id="rata_finale" step="0.01" required><br><br>
+        <label for="numero_rate">Numero di Rate:</label>
+        <input type="text" id="numero_rate" required><br>
 
-    <label for="tan">TAN (%):</label>
-    <input type="number" id="tan" step="0.01" required><br><br>
+        <label for="rata_finale">Rata Finale (€):</label>
+        <input type="text" id="rata_finale" required><br>
 
-    <button onclick="calcolaCostoTotale()">Calcola Costo Totale</button>
+        <label for="tan">TAN (%):</label>
+        <input type="text" id="tan" required><br>
 
-    <h2 id="risultato"></h2>
+        <!-- Sezione degli optional -->
+        <div class="optional">
+            <h2>Optional</h2>
+
+            <label for="garanzia">Garanzia Estesa (€):</label>
+            <input type="text" id="garanzia" placeholder="Inserisci il costo della garanzia"><br>
+
+            <label for="assicurazione">Assicurazione (€):</label>
+            <input type="text" id="assicurazione" placeholder="Inserisci il costo dell'assicurazione"><br>
+
+            <label for="pacchetto_accessori">Pacchetto Accessori (€):</label>
+            <input type="text" id="pacchetto_accessori" placeholder="Inserisci il costo del pacchetto accessori"><br>
+
+            <label for="sistemi_assistenza">Sistemi di Assistenza alla Guida (€):</label>
+            <input type="text" id="sistemi_assistenza" placeholder="Inserisci il costo dei sistemi di assistenza"><br>
+
+            <label for="navigatore">Navigatore GPS (€):</label>
+            <input type="text" id="navigatore" placeholder="Inserisci il costo del navigatore GPS"><br>
+
+            <label for="fari_led">Fari LED (€):</label>
+            <input type="text" id="fari_led" placeholder="Inserisci il costo dei fari LED"><br>
+
+            <label for="audio_premium">Sistema Audio Premium (€):</label>
+            <input type="text" id="audio_premium" placeholder="Inserisci il costo del sistema audio premium"><br>
+        </div>
+
+        <button onclick="calcolaCostoTotale()">Calcola Costo Totale</button>
+
+        <h2 id="risultato"></h2>
+    </div>
 
     <script>
         function calcolaCostoTotale() {
@@ -41,8 +161,18 @@
             // Calcolo del totale delle rate mensili considerando il TAN
             const totale_rate_mensili = rata_mensile * numero_rate * (1 + tan_mensile * numero_rate / 2);
 
-            // Calcolo del costo totale
-            const costo_totale = anticipo + totale_rate_mensili + rata_finale;
+            // Somma opzionali inseriti dall'utente
+            let costo_opzionali = 0;
+            costo_opzionali += parseFloat(document.getElementById("garanzia").value) || 0;
+            costo_opzionali += parseFloat(document.getElementById("assicurazione").value) || 0;
+            costo_opzionali += parseFloat(document.getElementById("pacchetto_accessori").value) || 0;
+            costo_opzionali += parseFloat(document.getElementById("sistemi_assistenza").value) || 0;
+            costo_opzionali += parseFloat(document.getElementById("navigatore").value) || 0;
+            costo_opzionali += parseFloat(document.getElementById("fari_led").value) || 0;
+            costo_opzionali += parseFloat(document.getElementById("audio_premium").value) || 0;
+
+            // Calcolo del costo totale con gli optional
+            const costo_totale = anticipo + totale_rate_mensili + rata_finale + costo_opzionali;
 
             // Mostra il risultato
             document.getElementById("risultato").innerText = `Il costo totale dell'auto è: €${costo_totale.toFixed(2)}`;
